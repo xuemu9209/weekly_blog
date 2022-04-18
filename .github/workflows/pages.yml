@@ -1,32 +1,22 @@
-name: CI
-
-on:
-  push:
-    branches:
-      - main  # default branch
-
+on: push
+name: Deploy
 jobs:
-  pages:
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js 16.14.2
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16.14.2'
-      - name: Cache NPM dependencies
-        uses: actions/cache@v2
-        with:
-          path: node_modules
-          key: ${{ runner.OS }}-npm-cache
-          restore-keys: |
-            ${{ runner.OS }}-npm-cache
-      - name: Install Dependencies
-        run: npm install
-      - name: Build
-        run: npm run build
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+    - name: Clean
+      uses: heowc/action-hexo@main
+      with:
+        args: clean
+    - name: Generate
+      uses: heowc/action-hexo@main
+      with:
+        args: generate
+    - name: Deploy
+      uses: heowc/action-hexo@main
+      env:
+        EMAIL: xuemu9209@gmail.com
+        NAME: xuemu9209
+      with:
+        args: deploy
