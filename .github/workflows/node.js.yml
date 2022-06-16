@@ -20,12 +20,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - uses: sma11black/hexo-action@v1.0.4
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm install hexo -g
     - run: hexo generate
     
     
